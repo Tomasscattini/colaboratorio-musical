@@ -17,9 +17,9 @@ const PrivateComponent = () => <p>Private</p>;
 export const defaultRedirects = {
     notAuthenticated: '/login',
     [authRoles.admin]: '/profile',
-    [authRoles.user]: '/home',
+    [authRoles.user]: '/projects',
     [authRoles.onlyGuest]: '/profile',
-    default: '/home'
+    default: '/projects'
 };
 
 export const routes = [
@@ -31,6 +31,13 @@ export const routes = [
     {
         path: parsePath('/home'),
         component: HomePage,
+        privateRoute: true,
+        exact: true
+    },
+    {
+        path: parsePath('/projects'),
+        component: HomePage,
+        privateRoute: true,
         exact: true
     },
     {

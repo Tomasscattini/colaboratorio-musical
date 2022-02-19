@@ -5,67 +5,40 @@ const navigationConfig = (language) => ({
         {
             title: language?.navigationMenu?.home,
             icon: 'home_outlined',
-            path: parsePath()
+            path: parsePath(),
+            onlyLoggedIn: true
         },
         {
-            title: language?.navigationMenu?.auth,
-            dropdown: [
-                {
-                    title: language?.navigationMenu?.login,
-                    icon: 'lock_open_outlined',
-                    path: parsePath('/login')
-                },
-                {
-                    title: language?.navigationMenu?.register,
-                    icon: 'person_outlined',
-                    path: parsePath('/register')
-                },
-                {
-                    title: language?.navigationMenu?.forgotPassword,
-                    icon: 'vpn_key_outlined',
-                    path: parsePath('/forgot-password')
-                },
-                {
-                    title: language?.navigationMenu?.mailConfirmation,
-                    icon: 'mail_outlined',
-                    path: parsePath('/reset-confirmation')
-                }
-            ]
+            title: language?.navigationMenu?.login,
+            icon: 'lock_open_outlined',
+            path: parsePath('/login'),
+            onlyLoggedOut: true
         },
         {
-            title: language?.navigationMenu?.account,
-            dropdown: [
-                {
-                    title: language?.navigationMenu?.profile,
-                    icon: 'person_outlined',
-                    path: parsePath('/profile')
-                },
-                {
-                    title: language?.navigationMenu?.settings,
-                    icon: 'settings_outlined',
-                    path: parsePath('/settings')
-                }
-            ]
+            title: language?.navigationMenu?.register,
+            icon: 'person_outlined',
+            path: parsePath('/register'),
+            onlyLoggedOut: true
         },
         {
-            title: language?.navigationMenu?.otherPages,
-            dropdown: [
-                {
-                    title: language?.navigationMenu?.error,
-                    icon: 'error_outlined',
-                    path: parsePath('/error')
-                },
-                {
-                    path: parsePath('/terms&conditions'),
-                    icon: 'gavel_outlined',
-                    title: language?.footer?.menuItems?.terms
-                },
-                {
-                    path: parsePath('/privacy-policy'),
-                    icon: 'gavel_outlined',
-                    title: language?.footer?.menuItems?.privacyPolicy
-                }
-            ]
+            title: language?.navigationMenu?.profile,
+            icon: 'perm_identity_outlined',
+            path: '/profile',
+            type: 'user-menu',
+            onlyLoggedIn: true
+        },
+        {
+            title: language?.navigationMenu?.settings,
+            icon: 'settings',
+            type: 'user-menu',
+            onlyLoggedIn: true,
+            path: '/settings'
+        },
+        {
+            title: language?.navigationMenu?.logout,
+            icon: 'exit_to_app_outlined',
+            type: 'logout',
+            onlyLoggedIn: true
         }
     ],
     footermenu: [

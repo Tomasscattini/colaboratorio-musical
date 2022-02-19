@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { useSelector, useDispatch } from 'react-redux';
+import { submitLoginWithFireBase, forgotPassword } from 'auth/store/loginSlice';
+import { registerWithFirebase } from 'auth/store/registerSlice';
 
-import AuthCard from 'components/cards/AuthCard';
+import { Container, Grid, makeStyles, Typography } from '@material-ui/core';
+
+import { AuthCard } from 'custom-components';
 import MailConfirmPage from 'pages/account/MailConfirmPage';
 
 import { defaultRedirects } from 'config/routesConfig';
@@ -48,8 +48,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const LandingPage = ({ history, form = 'signup', onSubmit = () => {} }) => {
+const LandingPage = ({ history, form = 'signup' }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const { appInformation } = useSelector(({ ui }) => ui);
     const { authenticated, data } = useSelector(({ auth }) => auth.user);
@@ -58,6 +59,16 @@ const LandingPage = ({ history, form = 'signup', onSubmit = () => {} }) => {
     useEffect(() => {
         if (authenticated) history.push(defaultRedirects[data?.role] || defaultRedirects.default);
     }, [history, authenticated, data?.role]);
+
+    const onLoginSubmit = (values) => {
+        dispatch(submitLoginWithFireBase(values));
+    };
+    const onRegisterSubmit = (values) => {
+        dispatch(registerWithFirebase(values));
+    };
+    const onResetPasswordSubmit = (values) => {
+        dispatch(forgotPassword(values));
+    };
 
     return (
         <Container maxWidth="lg" style={{ minHeight: '100vh', padding: '5vh 0' }}>
@@ -81,10 +92,10 @@ const LandingPage = ({ history, form = 'signup', onSubmit = () => {} }) => {
                 </Grid>
                 <Grid item xs={false} lg={1}></Grid>
                 <Grid item xs={10} sm={8} lg={5}>
-                    {form === 'login' && <AuthCard form={form} onSubmit={onSubmit} />}
-                    {form === 'signup' && <AuthCard form={form} onSubmit={onSubmit} />}
-                    {form === 'forgot-pwd' && <AuthCard form={form} onSubmit={onSubmit} />}
-                    {form === 'mail-confirmation' && <MailConfirmPage onSubmit={onSubmit} />}
+                    {form === 'login' && <AuthCard form={form} onSubmit={onLoginSubmit} />}
+                    {form === 'signup' && <AuthCard form={form} onSubmit={onRegisterSubmit} />}
+                    {form === 'forgot-pwd' && <AuthCard form={form} onSubmit={onResetPasswordSubmit} />}
+                    {form === 'mail-confirmation' && <MailConfirmPage onSubmit={onResetPasswordSubmit} />}
                 </Grid>
             </Grid>
         </Container>

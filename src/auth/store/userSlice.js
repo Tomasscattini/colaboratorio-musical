@@ -32,7 +32,14 @@ export const createUserSettingsFirebase = (authUser) => async (dispatch, getStat
     const guestUser = getState().auth.user;
 
     const user = _.merge({}, guestUser, {
-        data: authUser
+        email: authUser.email || '',
+        firstName: authUser.firstName || '',
+        from: 'firebase',
+        lastName: authUser.lastName || '',
+        photoURL: authUser.photoURL || '',
+        redirectUrl: '/',
+        role: authUser.role || authRoles.onlyGuest,
+        uid: authUser.uid
     });
 
     dispatch(updateUserData(user));
@@ -80,7 +87,7 @@ export const removeResume = () => async (dispatch, getState) => {
 
 export const logoutUser = () => async (dispatch, getState) => {
     history.push({
-        pathname: parsePath('/')
+        pathname: parsePath()
     });
 
     await firebaseService.signOut();
