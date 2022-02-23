@@ -36,13 +36,17 @@ const AuthUserSmallCard = ({ onClick = () => {} }) => {
         <div onClick={onClick} className={classes.root}>
             <div>
                 <Typography className={classes.userName} color="textPrimary" variant="body1">
-                    {user.displayName}
+                    {user.personalInformation?.firstName} {user.personalInformation?.lastName}
                 </Typography>
                 <Typography className={classes.userEmail} color="textSecondary" variant="body2">
-                    {user.email}
+                    {user.personalInformation?.email}
                 </Typography>
             </div>
-            <Avatar className={classes.avatar} src={user.photoURL} alt={user.firstName} />
+            <Avatar
+                className={classes.avatar}
+                src={user.personalInformation?.photoURL}
+                alt={user.personalInformation?.firstName}
+            />
         </div>
     );
 };

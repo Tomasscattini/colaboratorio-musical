@@ -99,9 +99,9 @@ export const forgotPassword =
 //             });
 //     };
 
-export const deleteAccount = () => async (dispatch) => {
+export const deleteAccount = (values) => async (dispatch) => {
     return firebaseService
-        .deleteAccount()
+        .deleteAccount(values)
         .then(() => {
             dispatch(showMessage({ message: 'Your account has been succesfully deleted', variant: 'success' }));
             return { status: 'done' };

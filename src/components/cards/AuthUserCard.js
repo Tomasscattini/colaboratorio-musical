@@ -35,12 +35,16 @@ const AuthUserCard = ({ items }) => {
 
     return (
         <div className={classes.root}>
-            <Avatar className={classes.avatar} src={user.photoURL} alt={user.firstName} />
+            <Avatar
+                className={classes.avatar}
+                src={user.personalInformation?.photoURL}
+                alt={user.personalInformation?.firstName}
+            />
             <Typography className={classes.userName} color="textPrimary" variant="body1">
-                {user.displayName}
+                {user.personalInformation?.firstName} {user.personalInformation?.lastName}
             </Typography>
             <Typography color="textSecondary" variant="body2">
-                {user.email}
+                {user.personalInformation?.email}
             </Typography>
             {items?.map((item, index) => (
                 <Link className={classes.link} key={index} to={item.path}>

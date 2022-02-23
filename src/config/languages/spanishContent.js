@@ -1,4 +1,10 @@
 const spanishContent = {
+    errorPage: {
+        pageTitle: 'Ups! Página no encontrada.',
+        message:
+            'La página que estás buscando puede haber sido removida, cambió de nombre, o está temporalmente fuera de servicio.',
+        homeButton: 'Volver al inicio'
+    },
     footer: {
         copyright: 'Todos los derechos reservados',
         menuItems: {
@@ -63,6 +69,12 @@ const spanishContent = {
             }
         }
     },
+    mantainancePage: {
+        pageTitle: 'Este sitio está bajo mantenimiento.',
+        message:
+            'Estamos haciendo algunas actualizaciones para ofrecerle una mejor experiencia. Perdón por los inconvenientes, estaremos de vuelta muy pronto!',
+        visitWebsiteButton: 'Visita nuestra página web'
+    },
     navigationMenu: {
         account: 'Cuenta',
         auth: 'Autenticación',
@@ -74,8 +86,10 @@ const spanishContent = {
         mailConfirmation: 'Confirmación de E-mail',
         otherPages: 'Otras páginas',
         profile: 'Perfil',
+        projects: 'Proyectos Públicos',
         register: 'Registro',
-        settings: 'Configuración'
+        settings: 'Configuración',
+        userProjects: 'Mis proyectos'
     },
     privacyPolicy: {
         title: 'Política de Privacidad',
@@ -145,6 +159,7 @@ const spanishContent = {
         deleteAccountCard: {
             title: 'Eliminar tu cuenta',
             deleteLabel: 'Escribí "Eliminar"',
+            deleteDataLabel: 'Borrar también todos mis proyectos',
             submitBtn: 'Eliminar cuenta',
             confirmRequired: 'Por favor escribí exactamente la palabra "Eliminar"',
             confirmationWord: ['eliminar']

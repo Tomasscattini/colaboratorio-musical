@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[1]
     },
     cardHeader: {
-        backgroundColor: theme.palette.type === 'light' ? theme.palette.secondary.main : '#121212',
-        color: theme.palette.type === 'light' ? theme.palette.secondary.contrastText : '#DADADA',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
         '& .MuiToolbar-root': {
             display: 'flex',
             justifyContent: 'space-between'
@@ -79,16 +79,9 @@ const useStyles = makeStyles((theme) => ({
 const defaultValues = {
     firstName: '',
     lastName: '',
-    contact: {
-        email: '',
-        tel: ''
-    },
-    general: {},
-    insurance: {
-        insuredPersonType: '',
-        healthInsuranceFund: '',
-        healthInsuranceNumber: ''
-    }
+    email: '',
+    phoneNumber: '',
+    professionalRole: ''
 };
 
 const schema = yup.object().shape({});
@@ -99,7 +92,7 @@ function KeyInfoTab({ setIsDataChanged, user }) {
 
     const [edit, setEdit] = useState(false);
 
-    const { data } = useSelector(({ auth }) => auth.user);
+    const data = useSelector(({ auth }) => auth.user.data.personalInformation);
     const text = useSelector(({ ui }) => ui.textContent?.profilePage);
 
     const { handleSubmit, reset, control } = useForm({
@@ -119,20 +112,9 @@ function KeyInfoTab({ setIsDataChanged, user }) {
             ...data,
             firstName: data.firstName || '',
             lastName: data.lastName || '',
-            contact: {
-                ...data.contact,
-                email: data.email || '',
-                tel: data.phoneNumber || ''
-            },
-            general: {
-                ...data.general
-            },
-            insurance: {
-                ...data.insurance,
-                insuredPersonType: data.insuredPersonType || '',
-                healthInsuranceFund: data.healthInsuranceFund || '',
-                healthInsuranceNumber: data.healthInsuranceNumber || ''
-            }
+            email: data.email || '',
+            phoneNumber: data.phoneNumber || '',
+            professionalRole: data.professionalRole || ''
         });
     }, [data, reset]);
 
@@ -140,12 +122,8 @@ function KeyInfoTab({ setIsDataChanged, user }) {
         if (data) resetForm();
     }, [data, resetForm]);
 
-    if (!data) {
-        return null;
-    }
-
     const onSubmit = async (values) => {
-        dispatch(updateUserInformation({ ...values, displayName: `${values.firstName} ${values.lastName}` }));
+        dispatch(updateUserInformation(values));
         setEdit(false);
         setIsDataChanged(false);
     };
@@ -257,7 +235,7 @@ function KeyInfoTab({ setIsDataChanged, user }) {
                             {edit && false ? (
                                 <FormControl style={{ margin: '8px 0 16px 0' }} required fullWidth>
                                     <Controller
-                                        name="contact.email"
+                                        name="email"
                                         control={control}
                                         render={({ field }) => (
                                             <TextField
@@ -291,7 +269,7 @@ function KeyInfoTab({ setIsDataChanged, user }) {
                             {edit ? (
                                 <FormControl style={{ margin: '8px 0 16px 0' }} fullWidth>
                                     <Controller
-                                        name="contact.tel"
+                                        name="phoneNumber"
                                         control={control}
                                         render={({ field }) => (
                                             <TextField
@@ -339,7 +317,7 @@ function KeyInfoTab({ setIsDataChanged, user }) {
                             {edit ? (
                                 <FormControl style={{ margin: '8px 0 16px 0' }} required fullWidth>
                                     <Controller
-                                        name="profession"
+                                        name="professionalRole"
                                         control={control}
                                         render={({ field }) => (
                                             <TextField
@@ -354,7 +332,7 @@ function KeyInfoTab({ setIsDataChanged, user }) {
                                     />
                                 </FormControl>
                             ) : (
-                                <Typography>{user?.profession}</Typography>
+                                <Typography>{user?.professionalRole}</Typography>
                             )}
                         </div>
                     </CardContent>

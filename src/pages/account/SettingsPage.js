@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
 function SettingsPage() {
     const classes = useStyles();
 
-    const user = useSelector(({ auth }) => auth?.user?.data);
+    const user = useSelector(({ auth }) => auth?.user?.data?.personalInformation);
 
     return (
         <div>
@@ -151,13 +151,17 @@ function SettingsPage() {
             <Container maxWidth="lg">
                 <div className={classes.profileInformation}>
                     <div>
-                        <Avatar className={clsx(classes.avatar)} src={user.photoURL || fallBackProfileImage} />
+                        <Avatar
+                            className={clsx(classes.avatar)}
+                            src={user?.photoURL || fallBackProfileImage}
+                            alt={user?.firstName}
+                        />
                     </div>
                     <div className={classes.profileNameWrapper}>
                         <div>
                             <div className={classes.profileName}>
                                 <Typography variant="h4" color="inherit">
-                                    {user?.displayName}
+                                    {user?.firstName} {user?.lastName}
                                 </Typography>
                                 {user?.isApproved && (
                                     <Icon fontSize="large" style={{ color: green[500] }}>
@@ -166,7 +170,7 @@ function SettingsPage() {
                                 )}
                             </div>
                             <Typography className={classes.profileEmail} variant="body1" color="textSecondary">
-                                {user?.work?.occupation || user?.email}
+                                {user?.professionalRole || user?.email}
                             </Typography>
                         </div>
                     </div>

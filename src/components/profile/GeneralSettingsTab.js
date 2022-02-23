@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { changePassword, deleteAccount } from 'auth/store/loginSlice';
 
 import {
     AppBar,
@@ -30,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
         margin: '60px 0 100px 0'
     },
     cardHeader: {
-        backgroundColor: theme.palette.type === 'light' ? '#DADADA' : '#121212',
-        color: theme.palette.type === 'light' ? '#333333' : '#DADADA',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
         '& .MuiToolbar-root': {
             display: 'flex',
             justifyContent: 'space-between'
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 function GeneralSettingsTab() {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const [tab, setTab] = useState(1);
     const textProvider = useSelector(({ ui }) => ui.textContent.settingsPage);
@@ -56,6 +58,14 @@ function GeneralSettingsTab() {
     const item = {
         hidden: { opacity: 0, y: 40 },
         show: { opacity: 1, y: 0 }
+    };
+
+    const handleChangePassword = async (values) => {
+        return await dispatch(changePassword(values));
+    };
+
+    const handleDeleteAccount = async (values) => {
+        return await dispatch(deleteAccount(values));
     };
 
     return (
@@ -96,8 +106,8 @@ function GeneralSettingsTab() {
                     </Card>
                 </Grid>
                 <Grid item xs={12} md={9}>
-                    {tab === 1 && <ChangePasswordTab />}
-                    {tab === 2 && <DeleteAccountTab />}
+                    {tab === 1 && <ChangePasswordTab onSubmit={handleChangePassword} />}
+                    {tab === 2 && <DeleteAccountTab onSubmit={handleDeleteAccount} />}
                 </Grid>
             </Grid>
         </div>

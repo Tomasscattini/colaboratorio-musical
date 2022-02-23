@@ -1,4 +1,10 @@
 const englishContent = {
+    errorPage: {
+        pageTile: 'Oops! Page not found.',
+        message:
+            'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.',
+        homeButton: 'Back to Home'
+    },
     footer: {
         copyright: 'All rights reserved',
         menuItems: {
@@ -62,6 +68,12 @@ const englishContent = {
             }
         }
     },
+    mantainancePage: {
+        pageTile: 'This site is under mantainance.',
+        message:
+            "We are making some updates to bring you the best experience. Sorry for the inconvenience, we'll be back very soon!",
+        visitWebsiteButton: 'Visit our Website'
+    },
     navigationMenu: {
         account: 'Account',
         auth: 'Auth',
@@ -73,8 +85,10 @@ const englishContent = {
         mailConfirmation: 'Mail Confirmation',
         otherPages: 'Other Pages',
         profile: 'Profile',
+        projects: 'Public Projects',
         register: 'Register',
-        settings: 'Account Settings'
+        settings: 'Account Settings',
+        userProjects: 'My projects'
     },
     privacyPolicy: {
         title: 'Privacy Policy',
@@ -144,6 +158,7 @@ const englishContent = {
         deleteAccountCard: {
             title: 'Delete your account',
             deleteLabel: 'Write "Delete"',
+            deleteDataLabel: 'Delete also all my projects data',
             submitBtn: 'Delete Account',
             confirmRequired: 'Please write exactly the word "Delete".',
             confirmationWord: ['delete']

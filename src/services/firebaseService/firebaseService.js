@@ -1,6 +1,6 @@
 /* eslint import/no-extraneous-dependencies: off*/
 import { initializeApp } from 'firebase/app';
-import { doc, getFirestore, getDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getFirestore, getDoc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import {
     deleteUser,
@@ -58,7 +58,7 @@ export class FirebaseService {
 
     updateUserData = async (user) => {
         try {
-            const userId = user.uid || user.data?.uid;
+            const userId = user?.uid || user.data?.uid;
             await setDoc(doc(this.db, 'users', userId), user, { merge: true });
         } catch (error) {
             throw new Error(error);
@@ -82,10 +82,11 @@ export class FirebaseService {
         }
     };
 
-    deleteAccount = async () => {
+    deleteAccount = async ({ deleteData }) => {
         try {
             const user = this.auth.currentUser;
             await deleteUser(user);
+            if (deleteData === true) await deleteDoc(doc(this.db, 'users', user.uid));
         } catch (error) {
             throw new Error(error);
         }

@@ -67,11 +67,13 @@ export const routes = [
     {
         path: parsePath('/profile'),
         component: ProfilePage,
+        privateRoute: true,
         exact: true
     },
     {
         path: parsePath('/settings'),
         component: SettingsPage,
+        privateRoute: true,
         exact: true
     },
     {

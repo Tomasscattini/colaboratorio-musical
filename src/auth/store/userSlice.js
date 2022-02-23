@@ -4,7 +4,6 @@ import { createBrowserHistory } from 'history';
 import _ from 'lodash';
 import { showMessage } from 'store/messageSlice';
 import firebaseService from 'services/firebaseService';
-import { parsePath } from 'utils/helpers';
 import authRoles from 'auth/authRoles';
 
 const history = createBrowserHistory();
@@ -12,13 +11,9 @@ const history = createBrowserHistory();
 export const setUserDataFirebase = (user, authUser) => async (dispatch) => {
     if (user) {
         const userData = {
-            email: user.email || '',
-            firstName: user.firstName || '',
-            from: 'firebase',
-            lastName: user.lastName || '',
-            photoURL: user.photoURL || '',
-            redirectUrl: '/',
-            role: user.role || authRoles.onlyGuest
+            personalInformation: user.personalInformation || {},
+            role: user.role || authRoles.onlyGuest,
+            uid: user.uid
         };
         return dispatch(setUserData(userData));
     }
@@ -31,16 +26,19 @@ export const setUserDataFirebase = (user, authUser) => async (dispatch) => {
 export const createUserSettingsFirebase = (authUser) => async (dispatch, getState) => {
     const guestUser = getState().auth.user;
 
-    const user = _.merge({}, guestUser, {
-        email: authUser.email || '',
-        firstName: authUser.firstName || '',
-        from: 'firebase',
-        lastName: authUser.lastName || '',
-        photoURL: authUser.photoURL || '',
-        redirectUrl: '/',
-        role: authUser.role || authRoles.onlyGuest,
-        uid: authUser.uid
-    });
+    const user = _.merge(
+        {},
+        {
+            personalInformation: guestUser.data?.personalInformation || {},
+            role: guestUser.data?.role || '',
+            uid: guestUser.data?.uid || ''
+        },
+        {
+            personalInformation: authUser.personalInformation || {},
+            role: authUser.role || authRoles.onlyGuest,
+            uid: authUser.uid
+        }
+    );
 
     dispatch(updateUserData(user));
 
@@ -49,45 +47,35 @@ export const createUserSettingsFirebase = (authUser) => async (dispatch, getStat
 
 export const setUserData = (user) => async (dispatch, getState) => {
     const userData = {
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        photoURL: user.photoURL || '',
-        role: user.role || authRoles.onlyGuest
+        personalInformation: user.personalInformation || {},
+        role: user.role || authRoles.onlyGuest,
+        uid: user.uid
     };
     dispatch(setUser(userData));
 };
 
 export const updateUserInformation = (information) => async (dispatch, getState) => {
     const oldUser = getState().auth.user;
-    const user = _.merge({}, oldUser, { data: { ...oldUser.data, ...information } });
+    const user = _.merge(
+        {},
+        {
+            personalInformation: oldUser.data?.personalInformation || {},
+            role: oldUser.data?.role || '',
+            uid: oldUser.data?.uid || ''
+        },
+        {
+            personalInformation: information
+        }
+    );
 
     dispatch(updateUserData(user));
-
-    return dispatch(setUserDataFirebase(user));
-};
-
-export const editUserSkills = (skills) => async (dispatch, getState) => {
-    const oldUser = getState().auth.user;
-    const user = { ...oldUser, data: { ...oldUser.data, work: { ...oldUser.data?.work, skills } } };
-
-    dispatch(updateUserData(user));
-
-    return dispatch(setUserDataFirebase(user));
-};
-
-export const removeResume = () => async (dispatch, getState) => {
-    const oldUser = getState().auth.user;
-    const user = _.merge({}, oldUser, { data: { ...oldUser.data, work: { ...oldUser.data.work, resume: '' } } });
-
-    await firebaseService.removeResume(user.data?.uid);
 
     return dispatch(setUserDataFirebase(user));
 };
 
 export const logoutUser = () => async (dispatch, getState) => {
     history.push({
-        pathname: parsePath()
+        pathname: '/'
     });
 
     await firebaseService.signOut();
@@ -124,7 +112,7 @@ export const updateUserData = (user) => async (dispatch, getState) => {
 
 const initialState = {
     authenticated: false,
-    data: {}
+    personalInformation: {}
 };
 
 const userSlice = createSlice({

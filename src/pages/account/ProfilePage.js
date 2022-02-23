@@ -36,7 +36,7 @@ function ProfilePage() {
     const [tabToMove, setTabToMove] = useState(0);
 
     const textProvider = useSelector(({ ui }) => ui.textContent.profilePage);
-    const user = useSelector(({ auth }) => auth?.user?.data);
+    const user = useSelector(({ auth }) => auth?.user?.data?.personalInformation);
 
     const useStyles = makeStyles((theme) => ({
         avatar: {
@@ -195,7 +195,7 @@ function ProfilePage() {
     }
 
     const onSubmit = async (values, type) => {
-        let updatedUser = { ...user.data };
+        let updatedUser = { ...user?.data };
         if (type && type === 'bg') {
             updatedUser = { ...updatedUser, bgURL: values };
         } else {
@@ -240,7 +240,11 @@ function ProfilePage() {
             <Container maxWidth="lg">
                 <div className={classes.profileInformation}>
                     <div>
-                        <Avatar className={clsx(classes.avatar)} src={user.photoURL || fallBackProfileImage} />
+                        <Avatar
+                            className={clsx(classes.avatar)}
+                            src={user?.photoURL || fallBackProfileImage}
+                            alt={user?.firstName}
+                        />
                         <form style={{ position: 'relative' }}>
                             <label htmlFor="photoURL" className={classes.profileImageLabel}>
                                 <input
@@ -261,7 +265,7 @@ function ProfilePage() {
                         <div>
                             <div className={classes.profileName}>
                                 <Typography variant="h4" color="inherit">
-                                    {user?.displayName}
+                                    {user?.firstName} {user?.lastName}
                                 </Typography>
                                 {user?.isApproved && (
                                     <Icon fontSize="large" style={{ color: green[500] }}>
@@ -270,7 +274,7 @@ function ProfilePage() {
                                 )}
                             </div>
                             <Typography className={classes.profileEmail} variant="body1" color="textSecondary">
-                                {user?.work?.occupation || user?.email}
+                                {user?.professionalRole || user?.email}
                             </Typography>
                         </div>
                     </div>

@@ -10,17 +10,28 @@ export const registerWithFirebase = (model) => async (dispatch) => {
 
         return () => false;
     }
-    const { email, password, displayName, firstName, lastName } = model;
+    const { email, password, displayName } = model;
+
+    const deconstructedName = displayName.split(' ');
+    const firstName = deconstructedName
+        .map((name, index, array) => (index < Math.ceil(array.length / 2) ? name : ''))
+        .join(' ')
+        .trim();
+    const lastName = deconstructedName
+        .map((name, index, array) => (index >= Math.ceil(array.length / 2) ? name : ''))
+        .join(' ')
+        .trim();
 
     return createUserWithEmailAndPassword(firebaseService.auth, email, password)
         .then((response) => {
             dispatch(
                 createUserSettingsFirebase({
                     ...response.user,
-                    displayName,
-                    firstName,
-                    lastName,
-                    email
+                    personalInformation: {
+                        firstName,
+                        lastName,
+                        email
+                    }
                 })
             );
 

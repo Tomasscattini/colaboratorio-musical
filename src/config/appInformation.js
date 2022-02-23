@@ -1,5 +1,5 @@
 const appInformation = {
-    appTitle: 'Colaboratorio Musical',
+    appTitle: 'CoLaboratorio Musical',
     appLogo: '/images/logoTs.png',
     creator: 'Tomi Scattini',
     creatorWebsite: 'https://tomiscattini.com/',

@@ -1,23 +1,15 @@
-import { parsePath } from 'utils/helpers';
-
 const navigationConfig = (language) => ({
     headermenu: [
-        {
-            title: language?.navigationMenu?.home,
-            icon: 'home_outlined',
-            path: parsePath(),
-            onlyLoggedIn: true
-        },
+        // {
+        //     title: language?.navigationMenu?.home,
+        //     icon: 'home_outlined',
+        //     path: '/',
+        //     onlyLoggedIn: true
+        // },
         {
             title: language?.navigationMenu?.login,
             icon: 'lock_open_outlined',
-            path: parsePath('/login'),
-            onlyLoggedOut: true
-        },
-        {
-            title: language?.navigationMenu?.register,
-            icon: 'person_outlined',
-            path: parsePath('/register'),
+            path: '/login',
             onlyLoggedOut: true
         },
         {
@@ -28,11 +20,29 @@ const navigationConfig = (language) => ({
             onlyLoggedIn: true
         },
         {
+            title: language?.navigationMenu?.projects,
+            icon: 'list_alt_outlined',
+            path: '/projects',
+            onlyLoggedIn: true
+        },
+        {
+            title: language?.navigationMenu?.register,
+            icon: 'person_outlined',
+            path: '/register',
+            onlyLoggedOut: true
+        },
+        {
             title: language?.navigationMenu?.settings,
             icon: 'settings',
             type: 'user-menu',
             onlyLoggedIn: true,
             path: '/settings'
+        },
+        {
+            title: language?.navigationMenu?.userProjects,
+            icon: 'list_alt_outlined',
+            path: '/user/projects',
+            onlyLoggedIn: true
         },
         {
             title: language?.navigationMenu?.logout,
@@ -43,11 +53,11 @@ const navigationConfig = (language) => ({
     ],
     footermenu: [
         {
-            path: parsePath('/terms&conditions'),
+            path: '/terms&conditions',
             title: language?.footer?.menuItems?.terms
         },
         {
-            path: parsePath('/privacy-policy'),
+            path: '/privacy-policy',
             title: language?.footer?.menuItems?.privacyPolicy
         }
     ]

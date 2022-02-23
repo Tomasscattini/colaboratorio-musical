@@ -1,28 +1,30 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
+import { logoutUser } from 'auth/store/userSlice';
 
-import { Card, CardContent, makeStyles, TextField, Typography, withStyles } from '@material-ui/core';
+import { Card, CardContent, Checkbox, makeStyles, TextField, Typography, withStyles } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
 import { Button } from 'custom-components';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexDirection: 'column',
-        padding: '2rem',
-        [theme.breakpoints.up('md')]: {
-            marginTop: '-60px'
-        }
-    },
     button: {
         margin: '1rem auto'
     },
     card: {
         flexDirection: 'column',
         margin: '0 1rem'
+    },
+    deleteDataCheckbox: {
+        marginRight: '.2rem'
+    },
+    deleteDataWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: '1rem'
     },
     field: {
         marginBottom: '1rem'
@@ -31,6 +33,13 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    root: {
+        flexDirection: 'column',
+        padding: '2rem',
+        [theme.breakpoints.up('md')]: {
+            marginTop: '-60px'
+        }
     },
     title: {
         margin: '1rem 0 2rem 0'
@@ -48,11 +57,13 @@ const DangerButton = withStyles({
 })(Button);
 
 const defaultValues = {
-    confirm: ''
+    confirm: '',
+    deleteData: false
 };
 
-function DeleteAccountTab({ onSubmit: onHandleSubmit = () => {}, logoutUser = () => {} }) {
+function DeleteAccountTab({ onSubmit: onHandleSubmit = () => {} }) {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const textProvider = useSelector(({ ui }) => ui.textContent.settingsPage.deleteAccountCard);
 
@@ -73,9 +84,9 @@ function DeleteAccountTab({ onSubmit: onHandleSubmit = () => {}, logoutUser = ()
 
     const { isValid, errors } = formState;
 
-    async function onSubmit() {
-        const response = await onHandleSubmit();
-        if (response?.status === 'done') logoutUser();
+    async function onSubmit(values) {
+        const response = await onHandleSubmit(values);
+        if (response?.status === 'done') dispatch(logoutUser());
     }
 
     return (
@@ -110,6 +121,24 @@ function DeleteAccountTab({ onSubmit: onHandleSubmit = () => {}, logoutUser = ()
                                         />
                                     )}
                                 />
+
+                                <div className={classes.deleteDataWrapper}>
+                                    <Controller
+                                        name="deleteData"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Checkbox
+                                                {...field}
+                                                id="deleteData"
+                                                color="primary"
+                                                className={classes.deleteDataCheckbox}
+                                                error={!!errors.deleteData}
+                                                helperText={errors?.deleteData?.message}
+                                            />
+                                        )}
+                                    />
+                                    <label htmlFor="deleteData">{textProvider?.deleteDataLabel}</label>
+                                </div>
 
                                 <DangerButton
                                     variant="contained"

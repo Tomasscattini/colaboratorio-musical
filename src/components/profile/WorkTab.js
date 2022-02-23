@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserInformation, removeResume } from 'auth/store/userSlice';
+import { updateUserInformation } from 'auth/store/userSlice';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -76,10 +76,6 @@ function WorkTab({ user }) {
         dispatch(updateUserInformation(updatedUser));
     };
 
-    const handleRemoveResume = async () => {
-        dispatch(removeResume());
-    };
-
     const onSubmit = async (values, section, property) => {
         dispatch(updateUserInformation(values));
         handleEdit(section, property);
@@ -90,7 +86,7 @@ function WorkTab({ user }) {
             <Grid item xs={12} sm={8} lg={6}>
                 <ToggablePicker
                     label="Resume"
-                    onRemoveFile={handleRemoveResume}
+                    onRemoveFile={() => {}}
                     onSubmit={handleSubmitResume}
                     title="resume"
                     value={work?.resume}
