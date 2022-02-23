@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { themeDark } from 'store/uiSlice';
+import { themeDark } from 'store/ui/uiSlice';
 
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 

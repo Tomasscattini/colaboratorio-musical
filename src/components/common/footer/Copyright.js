@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { languageChanged } from 'store/uiSlice';
+import { languageChanged } from 'store/ui/uiSlice';
 
 import { Grid, makeStyles, Typography } from '@material-ui/core';
 

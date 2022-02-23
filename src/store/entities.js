@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import customReducer from './customSlice';
+import projectsReducer from './projectsSlice';
 
 export default combineReducers({
-    data: customReducer
+    projects: projectsReducer
 });

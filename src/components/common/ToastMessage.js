@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { hideMessage } from 'store/messageSlice';
+import { hideMessage } from 'store/ui/messageSlice';
 
 import { amber } from '@material-ui/core/colors';
 import { IconButton, makeStyles, Snackbar, SnackbarContent, Typography } from '@material-ui/core';

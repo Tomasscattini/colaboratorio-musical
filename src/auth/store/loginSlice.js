@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { showMessage } from 'store/messageSlice';
+import { showMessage } from 'store/ui/messageSlice';
 import { setUserData } from './userSlice';
 import firebaseService from 'services/firebaseService';
 

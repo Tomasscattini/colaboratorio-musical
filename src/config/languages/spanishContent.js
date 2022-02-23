@@ -140,6 +140,11 @@ const spanishContent = {
             }
         }
     },
+    publicProjectsPage: {
+        pageTitle: 'Proyectos públicos',
+        pageSubtitle:
+            'Navegá por los proyectos de la comunidad, guardá los que más te gustan y proponé nuevas ideas a sus creadores!'
+    },
     settingsPage: {
         menu: {
             title: 'Configuración',
@@ -173,6 +178,11 @@ const spanishContent = {
         title: 'Términos y Condiciones',
         content: 'Acá es dónde van a ir los términos y condiciones',
         actionButton: 'Inicio'
+    },
+    userProjectsPage: {
+        pageTitle: 'Mis proyectos',
+        pageSubtitle:
+            'Creá nuevos proyectos o manejá los ya existentes. Podés hacerlos públicos para recibir nuevas ideas de la comunidad o dejarlos privados para tu uso personal.'
     }
 };
 

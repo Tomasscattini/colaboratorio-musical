@@ -35,6 +35,8 @@ export { default as MenuButton } from 'components/menus/MenuButton';
 export { default as OtherGeneralTab } from 'components/profile/OtherGeneralTab';
 export { default as PageHeader } from 'components/headings/PageHeader';
 export { default as PopularCategories } from 'components/other/categories/PopularCategories';
+export { default as ProjectsList } from 'components/projects/ProjectsList';
+export { default as ProjectsListItem } from 'components/projects/ProjectsListItem';
 export { default as ReportItemModal } from 'components/modals/ReportItemModal';
 export { default as ResultsHeader } from 'components/common/ResultsHeader';
 export { default as ScrollTopBtn } from 'components/common/ScrollTopBtn';

@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
 import _ from 'lodash';
-import { showMessage } from 'store/messageSlice';
+import { showMessage } from 'store/ui/messageSlice';
 import firebaseService from 'services/firebaseService';
 import authRoles from 'auth/authRoles';
 

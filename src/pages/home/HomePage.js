@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { themeDark, themeLight, mantainanceModeEnabled, mantainanceModeDisabled } from 'store/uiSlice';
-import { showMessage } from 'store/messageSlice';
+import { themeDark, themeLight, mantainanceModeEnabled, mantainanceModeDisabled } from 'store/ui/uiSlice';
+import { showMessage } from 'store/ui/messageSlice';
 
 import { AccessAlarm } from '@material-ui/icons';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';

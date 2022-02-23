@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 
 import { Box, makeStyles, Typography } from '@material-ui/core';
 
@@ -8,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         color: theme.palette.text.primary,
+        width: '100%',
         marginTop: '2vh',
         '& .title': {
             textTransform: 'capitalize',
@@ -27,23 +29,21 @@ const useStyles = makeStyles((theme) => ({
 export default function Title({ className, title, size, subtitle, subtitleSize, style }) {
     const classes = useStyles();
     return (
-        <div className={className} style={style}>
-            <div className={classes.root}>
-                <Box>
-                    <Typography variant={size === 'small' ? 'h4' : 'h3'} className="title">
-                        {title}
+        <div className={clsx(classes.root, className)} style={style}>
+            <Box>
+                <Typography variant={size === 'small' ? 'h4' : 'h3'} className="title">
+                    {title}
+                </Typography>
+                {subtitle && (
+                    <Typography
+                        variant={subtitleSize === 'large' ? 'h6' : 'body1'}
+                        color="textSecondary"
+                        className="sub-title"
+                    >
+                        {subtitle}
                     </Typography>
-                    {subtitle && (
-                        <Typography
-                            variant={subtitleSize === 'large' ? 'h6' : 'body1'}
-                            color="textSecondary"
-                            className="sub-title"
-                        >
-                            {subtitle}
-                        </Typography>
-                    )}
-                </Box>
-            </div>
+                )}
+            </Box>
         </div>
     );
 }

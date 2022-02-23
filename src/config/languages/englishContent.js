@@ -139,6 +139,11 @@ const englishContent = {
             }
         }
     },
+    publicProjectsPage: {
+        pageTitle: 'Public Projects',
+        pageSubtitle:
+            "Surf through the community's projects, save the ones you like and propose new ideas to their creators!"
+    },
     settingsPage: {
         menu: {
             title: 'Settings',
@@ -172,6 +177,11 @@ const englishContent = {
         title: 'Terms & Conditions',
         content: 'This is where the terms and conditions will go',
         actionButton: 'Home'
+    },
+    userProjectsPage: {
+        pageTitle: 'My projects',
+        pageSubtitle:
+            'Create new projects or manage your existing ones. You can make them public to receive new ideas from the community or leave them private for you own personal use.'
     }
 };
 

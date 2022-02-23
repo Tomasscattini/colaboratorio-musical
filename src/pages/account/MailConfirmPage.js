@@ -1,7 +1,7 @@
 import { Link, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { showMessage } from 'store/messageSlice';
+import { showMessage } from 'store/ui/messageSlice';
 
 import { Card, CardContent, Icon, makeStyles, Typography } from '@material-ui/core';
 

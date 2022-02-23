@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import authReducer from 'auth/store';
-import entitiesReducer from './entities';
-import messagesReducer from './messageSlice';
-import uiReducer from './uiSlice';
+import entitiesReducer from 'store/entities';
+import messagesReducer from 'store/ui/messageSlice';
+import uiReducer from 'store/ui/uiSlice';
 
 export default combineReducers({
     auth: authReducer,

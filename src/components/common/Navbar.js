@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from 'auth/store/userSlice';
-import { themeDark, themeLight, languageChanged } from 'store/uiSlice';
+import { themeDark, themeLight, languageChanged } from 'store/ui/uiSlice';
 
 import { Close as CloseIcon, Menu as MenuIcon } from '@material-ui/icons';
 import {

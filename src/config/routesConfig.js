@@ -1,24 +1,26 @@
-//* Import components here 👇👇
-import MantainancePage from 'pages/others/MantainancePage';
-import ErrorPage from 'pages/others/ErrorPage';
-import HomePage from 'pages/home/HomePage';
-import LandingPage from 'pages/others/LandingPage';
-import ProfilePage from 'pages/account/ProfilePage';
-import SettingsPage from 'pages/account/SettingsPage';
-import TermsAndConditions from 'pages/others/TermsAndConditions';
-import PrivacyPolicy from 'pages/others/PrivacyPolicy';
+//* Import page components here 👇👇
+import {
+    ErrorPage,
+    LandingPage,
+    MantainancePage,
+    PrivacyPolicy,
+    ProfilePage,
+    ProjectDetailsPage,
+    PublicProjectsPage,
+    SettingsPage,
+    TermsAndConditions,
+    UserProjectsPage
+} from 'pages';
 
 import { mantainancePath, parsePath } from 'utils/helpers';
 import authRoles from 'auth/authRoles';
 import { MainRouteRedirect } from 'utils';
 
-const PrivateComponent = () => <p>Private</p>;
-
 export const defaultRedirects = {
     notAuthenticated: '/login',
-    [authRoles.admin]: '/profile',
+    [authRoles.admin]: '/projects',
     [authRoles.user]: '/projects',
-    [authRoles.onlyGuest]: '/profile',
+    [authRoles.onlyGuest]: '/projects',
     default: '/projects'
 };
 
@@ -29,14 +31,13 @@ export const routes = [
         exact: true
     },
     {
-        path: parsePath('/home'),
-        component: HomePage,
-        privateRoute: true,
-        exact: true
+        path: parsePath('/project/:projectid'),
+        component: ProjectDetailsPage,
+        privateRoute: true
     },
     {
         path: parsePath('/projects'),
-        component: HomePage,
+        component: PublicProjectsPage,
         privateRoute: true,
         exact: true
     },
@@ -87,13 +88,10 @@ export const routes = [
         exact: true
     },
     {
-        path: parsePath('/private-route'),
-        component: PrivateComponent,
+        path: parsePath('/user/projects'),
+        component: UserProjectsPage,
         privateRoute: true,
-        redirectRoute: '/public-route',
-        exact: true,
-        footer: false,
-        scrollBtn: false
+        exact: true
     },
     {
         path: parsePath(mantainancePath),

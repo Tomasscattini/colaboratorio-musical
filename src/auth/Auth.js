@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import SplashScreen from 'components/common/SplashScreen';
 import firebaseService from 'services/firebaseService';
-import { hideMessage, showMessage } from 'store/messageSlice';
+import { hideMessage, showMessage } from 'store/ui/messageSlice';
 
 import { logoutUser, setUserDataFirebase, createUserSettingsFirebase } from './store/userSlice';
 
