@@ -3,6 +3,9 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core';
+import { ItemCard } from 'custom-components';
+
+import { parsePublicProjectCardInfo } from 'utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
     root: {}
@@ -15,7 +18,7 @@ const ProjectsListItem = ({ classes, item, ...props }) => {
 
     return (
         <div className={clsx(internalClasses.root, classes?.root)} {...props}>
-            ProjectsListItem
+            <ItemCard btnText="Ver más" item={parsePublicProjectCardInfo(item)} />
         </div>
     );
 };

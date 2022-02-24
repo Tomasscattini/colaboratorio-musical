@@ -142,7 +142,9 @@ const englishContent = {
     publicProjectsPage: {
         pageTitle: 'Public Projects',
         pageSubtitle:
-            "Surf through the community's projects, save the ones you like and propose new ideas to their creators!"
+            "Surf through the community's projects, save the ones you like and propose new ideas to their creators!",
+        searchPlaceholder: 'Search',
+        searchBtnText: 'Search'
     },
     settingsPage: {
         menu: {

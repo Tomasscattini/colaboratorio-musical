@@ -143,7 +143,9 @@ const spanishContent = {
     publicProjectsPage: {
         pageTitle: 'Proyectos públicos',
         pageSubtitle:
-            'Navegá por los proyectos de la comunidad, guardá los que más te gustan y proponé nuevas ideas a sus creadores!'
+            'Navegá por los proyectos de la comunidad, guardá los que más te gustan y proponé nuevas ideas a sus creadores!',
+        searchPlaceholder: 'Buscar',
+        searchBtnText: 'Buscar'
     },
     settingsPage: {
         menu: {

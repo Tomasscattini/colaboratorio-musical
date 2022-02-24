@@ -12,6 +12,34 @@ const parseSeconds = (time) => {
     }`;
 };
 
+const getRandomId = () => {
+    return Math.random().toString(36).slice(2);
+};
+
+const parsePublicProjectCardInfo = (item) => {
+    const highestVersionNumber = Math.max.apply(
+        Math,
+        item.versions?.filter((version) => version?.version_status === 'approved').map((version) => version.version_id)
+    );
+    const lastVersion = item.versions?.find((version) => version.version_id === highestVersionNumber);
+
+    const title = lastVersion?.titles?.list?.filter((title) => title?.id === lastVersion?.titles?.chosen_title)[0]
+        ?.title;
+
+    return {
+        author: {
+            name: item.author?.full_name,
+            logo: item.author?.photo_url,
+            uid: item.author?.uid
+        },
+        logo: lastVersion?.image,
+        title,
+        projectId: item.id,
+        lyrics: lastVersion?.lyrics,
+        audio: lastVersion?.audio_files[0]
+    };
+};
+
 const mantainancePath = '/mantainance';
 
-export { mantainancePath, parsePath, parseSeconds };
+export { getRandomId, mantainancePath, parsePath, parsePublicProjectCardInfo, parseSeconds };

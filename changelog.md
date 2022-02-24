@@ -6,3 +6,4 @@
 -   Feature: Update user information to match new data structure.
 -   Feature: Add Projects pages and projects slice.
 -   Feature: Update projects slices.
+-   Feature: Add fake db and projects list item.

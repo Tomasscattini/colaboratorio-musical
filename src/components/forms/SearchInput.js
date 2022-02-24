@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import clsx from 'clsx';
 
 import { InputBase, makeStyles, Paper } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
@@ -44,7 +45,7 @@ const SearchInput = ({
     className,
     id,
     style,
-    placeholder = 'Search...',
+    placeholder = 'Search',
     onSubmit = () => {},
     onChange = () => {},
     searchIcon = true,
@@ -66,34 +67,32 @@ const SearchInput = ({
     };
 
     return (
-        <div className={className} id={id} style={style}>
-            <Paper className={classes.search}>
-                <form className={classes.form} onSubmit={handleSubmit}>
-                    <div className={classes.inputWrapper}>
-                        {searchIcon && (
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                        )}
-                        <InputBase
-                            placeholder={placeholder}
-                            onChange={handleChange}
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                            {...rest}
-                        />
-                    </div>
-                    {searchBtn && (
-                        <Button classes={{ root: classes.searchBtn }} type="submit">
-                            {searchBtnText}
-                        </Button>
+        <Paper className={clsx(classes.search, className)} id={id} style={style}>
+            <form className={classes.form} onSubmit={handleSubmit}>
+                <div className={classes.inputWrapper}>
+                    {searchIcon && (
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
                     )}
-                </form>
-            </Paper>
-        </div>
+                    <InputBase
+                        placeholder={`${placeholder}...`}
+                        onChange={handleChange}
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                        {...rest}
+                    />
+                </div>
+                {searchBtn && (
+                    <Button classes={{ root: classes.searchBtn }} type="submit">
+                        {searchBtnText}
+                    </Button>
+                )}
+            </form>
+        </Paper>
     );
 };
 

@@ -5,10 +5,14 @@ import clsx from 'clsx';
 
 import { Container, Grid, makeStyles } from '@material-ui/core';
 
-import { ProjectsList, Title } from 'custom-components';
+import { ProjectsList, SearchInput, Title } from 'custom-components';
 
 const useStyles = makeStyles((theme) => ({
-    root: {}
+    root: {},
+    searchBar: {
+        width: '100%',
+        marginTop: '5vh'
+    }
 }));
 
 const PublicProjectsPage = ({ classes, ...props }) => {
@@ -32,9 +36,14 @@ const PublicProjectsPage = ({ classes, ...props }) => {
             {...props}
         >
             <Title title={textProvider?.pageTitle} size="small" subtitle={textProvider?.pageSubtitle} />
-            <Grid item xs={12}>
-                <ProjectsList items={publicProjects} loading={loading} />
-            </Grid>
+
+            <SearchInput
+                placeholder={textProvider?.searchPlaceholder}
+                searchBtnText={textProvider?.searchBtnText}
+                className={internalClasses.searchBar}
+            />
+
+            <ProjectsList items={publicProjects} loading={loading} />
         </Container>
     );
 };

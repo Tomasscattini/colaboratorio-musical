@@ -49,7 +49,7 @@ class Auth extends Component {
                         (error) => {
                             // this.props.createUserSettingsFirebase({ uid: authUser.uid, email: authUser.email });
                             this.props.showMessage({
-                                message: 'Your account has been deleted',
+                                message: 'There was a problem with the connection',
                                 variant: 'error'
                             });
                             this.props.logout();

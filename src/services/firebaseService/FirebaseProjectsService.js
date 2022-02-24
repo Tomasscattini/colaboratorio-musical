@@ -1,19 +1,20 @@
 import FirebaseUploadService from 'services/firebaseService/FirebaseUploadService';
+import { publicProjects } from '@fake-db';
 
 export default class FirebaseProjectsService extends FirebaseUploadService {
     getProject = (projectId) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve([]);
-            }, 2000);
+            }, 1000);
         });
     };
 
     getPublicProjects = (params) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve([]);
-            }, 2000);
+                resolve(publicProjects);
+            }, 1000);
         });
     };
 
@@ -21,7 +22,7 @@ export default class FirebaseProjectsService extends FirebaseUploadService {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve([]);
-            }, 2000);
+            }, 1000);
         });
     };
 

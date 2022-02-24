@@ -8,8 +8,11 @@ import { Button } from 'custom-components';
 import { parsePath } from 'utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
+    audioPlayer: {
+        margin: '20px 0'
+    },
     root: {
-        width: '100%'
+        maxWidth: '100%'
     },
     cardImage: {
         height: '150px',
@@ -25,27 +28,24 @@ const useStyles = makeStyles((theme) => ({
             alignItems: 'center',
             width: '95%',
             '& .card-meta': {
-                fontSize: '13px',
-                textTransform: 'capitalize',
-                fontWeight: 600,
-                position: 'relative',
-                paddingLeft: '39px',
+                display: 'flex',
+                alignItems: 'center',
                 color: theme.palette.text.secondary,
+                '& .MuiTypography-root': {
+                    fontSize: '.88rem',
+                    textTransform: 'capitalize',
+                    fontWeight: 600
+                },
                 '& span': {
-                    position: 'absolute',
                     display: 'flex',
-                    alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '20px',
-                    top: '-9px',
-                    left: 0,
                     color: theme.palette.background.default,
                     width: '33px',
                     height: '33px',
                     backgroundColor: theme.palette.primary.main,
-                    lineHeight: '29px',
-                    textAlign: 'center',
-                    borderRadius: '50%'
+                    borderRadius: '50%',
+                    marginRight: '10px'
                 }
             },
             '& .card-title': {
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
                 fontSize: '15px',
                 color: '#808996',
                 fontWeight: 400,
-                height: '70px',
+                maxHeight: '70px',
                 overflow: 'hidden'
             },
             '& .card-content-btn': {
@@ -80,37 +80,39 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ btnText, item }) => {
     const classes = useStyles();
 
     if (!item) return null;
 
-    const { logo, internalURI, category, title, abstract, url, btnText } = item;
+    const { audio, logo, projectId, author, title, lyrics } = item;
 
     return (
         <Card className={classes.root}>
             <CardMedia className={classes.cardImage} image={parsePath(logo)} />
             <CardContent className={classes.cardContent}>
-                <div className="card-content">
-                    <Link to={parsePath(internalURI)}>
-                        {category && (
-                            <Typography variant="h5" className="card-meta">
-                                <span>{category?.logo || category?.icon}</span> {category?.title}
-                            </Typography>
-                        )}
-                        <Typography variant="h4" className="card-title">
-                            {title}
-                        </Typography>
-                        <Typography variant="body1" className="card-sub">
-                            {abstract}
-                        </Typography>
-                    </Link>
-                    {btnText && (
-                        <a className="card-content-btn" target="_blank" rel="noreferrer" href={url}>
-                            <Button>{btnText}</Button>
-                        </a>
+                <Link to={parsePath(`/projects/${projectId}`)} className="card-content">
+                    {author && (
+                        <Link to={parsePath(`/users/${author.uid}`)} className="card-meta">
+                            {author?.logo && <span>{author?.logo}</span>}
+                            <Typography variant="h5">{author?.name}</Typography>
+                        </Link>
                     )}
-                </div>
+                    <Typography variant="h4" className="card-title">
+                        {title}
+                    </Typography>
+                    <Typography variant="body1" className="card-sub">
+                        {lyrics}
+                    </Typography>
+                    {audio && (
+                        <div className={classes.audioPlayer}>
+                            <audio controls>
+                                <source src={audio.src} type={audio.type} />
+                            </audio>
+                        </div>
+                    )}
+                    {btnText && <Button>{btnText}</Button>}
+                </Link>
             </CardContent>
         </Card>
     );
