@@ -1,5 +1,6 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadPublicProjects, selectPublicProjects } from 'store/projects/publicProjectsSlice';
 import clsx from 'clsx';
 
 import { Container, Grid, makeStyles } from '@material-ui/core';
@@ -12,9 +13,15 @@ const useStyles = makeStyles((theme) => ({
 
 const PublicProjectsPage = ({ classes, ...props }) => {
     const internalClasses = useStyles();
+    const dispatch = useDispatch();
 
+    const { loading } = useSelector(({ entities }) => entities.projects?.publicProjects);
+    const publicProjects = useSelector(selectPublicProjects);
     const textProvider = useSelector(({ ui }) => ui.textContent.publicProjectsPage);
-    const publicProjects = useSelector(({ entities }) => entities.projects?.publicProjects?.list);
+
+    useEffect(() => {
+        dispatch(loadPublicProjects());
+    }, [dispatch]);
 
     return (
         <Container
@@ -26,7 +33,7 @@ const PublicProjectsPage = ({ classes, ...props }) => {
         >
             <Title title={textProvider?.pageTitle} size="small" subtitle={textProvider?.pageSubtitle} />
             <Grid item xs={12}>
-                <ProjectsList items={publicProjects} />
+                <ProjectsList items={publicProjects} loading={loading} />
             </Grid>
         </Container>
     );

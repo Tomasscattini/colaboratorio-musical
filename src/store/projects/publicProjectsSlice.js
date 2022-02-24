@@ -1,54 +1,53 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import firebaseService from 'services/firebaseService';
 
-export const loadPublicProjects = () => (dispatch, getState) => {
-    dispatch(projectsRequested());
-    return firebaseService
-        .getPublicProjects()
-        .then((data) => {
-            dispatch(projectsReceived(data));
-        })
-        .catch((error) => {
-            dispatch(projectsRequestFailed(error));
-        });
-};
+export const loadPublicProjects = createAsyncThunk(
+    'publicProjects/loadPublicProjects',
+    async (params, { dispatch, getState }) => {
+        try {
+            const data = await firebaseService.getPublicProjects(params);
+            return data;
+        } catch (error) {
+            return `${error?.message}`;
+        }
+    }
+);
+
+const publicProjectsAdapter = createEntityAdapter({});
+
+export const { selectAll: selectPublicProjects, selectById: selectPublicProjectsById } =
+    publicProjectsAdapter.getSelectors(({ entities }) => entities.projects.publicProjects);
 
 const slice = createSlice({
-    name: 'publicProjects',
+    name: 'projects/publicProjects',
     initialState: {
+        entities: {},
+        ids: [],
+        loading: false,
         searchParams: {
             searchText: ''
-        },
-        list: [],
-        loading: false,
-        lastFetch: null
+        }
     },
     reducers: {
-        projectsRequested: (data, action) => {
-            data.loading = true;
+        setSearchText: (state, action) => {
+            state.searchParams.searchText = action.payload;
         },
 
-        projectsReceived: (data, action) => {
-            data.list = action.payload;
-            data.loading = false;
-            data.lastFetch = Date.now();
+        clearSearchParams: (state, action) => {
+            state.searchParams.searchText = '';
+        }
+    },
+    extraReducers: {
+        [loadPublicProjects.pending]: (state, action) => {
+            state.loading = true;
         },
-
-        projectsRequestFailed: (data, action) => {
-            data.loading = false;
-        },
-
-        setSearchText: (data, action) => {
-            data.searchParams.searchText = action.payload;
-        },
-
-        clearSearchParams: (data, action) => {
-            data.searchParams.searchText = '';
+        [loadPublicProjects.fulfilled]: (state, action) => {
+            publicProjectsAdapter.setAll(state, action.payload);
+            state.loading = false;
         }
     }
 });
 
-export const { projectsReceived, projectsRequestFailed, projectsRequested, setSearchText, clearSearchParams } =
-    slice.actions;
+export const { setProjects, setSearchText, clearSearchParams } = slice.actions;
 
 export default slice.reducer;

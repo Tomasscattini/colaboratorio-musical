@@ -1,11 +1,29 @@
 import FirebaseUploadService from 'services/firebaseService/FirebaseUploadService';
 
 export default class FirebaseProjectsService extends FirebaseUploadService {
-    getProject = async () => {};
+    getProject = (projectId) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve([]);
+            }, 2000);
+        });
+    };
 
-    getPublicProjects = async () => {};
+    getPublicProjects = (params) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve([]);
+            }, 2000);
+        });
+    };
 
-    getUserProjects = async () => {};
+    getUserProjects = (params) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve([]);
+            }, 2000);
+        });
+    };
 
     editProjectVersion = async () => {};
 

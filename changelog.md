@@ -5,3 +5,4 @@
 -   Feature: Update navigation.
 -   Feature: Update user information to match new data structure.
 -   Feature: Add Projects pages and projects slice.
+-   Feature: Update projects slices.
