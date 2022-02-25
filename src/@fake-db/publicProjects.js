@@ -1,4 +1,5 @@
 import { getRandomId } from 'utils/helpers';
+import _ from 'lodash';
 
 const privacy_status_options = {
     public: 'public',
@@ -51,8 +52,8 @@ const publicProjects = [
                         type: 'audio/mpeg'
                     }
                 ],
-                theme: 'Una vaca vieja en la quebrada de Humahuaca',
-                genre: 'Vidala',
+                theme: 'Una vaca',
+                genre: 'No sé',
                 assignment_rules: 'Componer una canción infantil con aire norteño',
                 lyrics: 'Había una vez una vaca...',
                 image: 'https://res.cloudinary.com/tomiscattini/image/upload/v1645736521/Otras%20fotos/index_qu0x9c.jpg',
@@ -62,19 +63,8 @@ const publicProjects = [
                 version_id: 2,
                 version_status: version_status_options.approved,
                 titles: {
-                    open_to_vote: false,
                     chosen_title: 997,
                     list: [
-                        {
-                            id: 17,
-                            title: 'Mi primera canción',
-                            votes: 0
-                        },
-                        {
-                            id: 95,
-                            title: 'Otro título',
-                            votes: 0
-                        },
                         {
                             id: 997,
                             title: 'La vaca estudiosa',
@@ -82,55 +72,13 @@ const publicProjects = [
                         }
                     ]
                 },
-                audio_files: [
-                    {
-                        src: 'https://res.cloudinary.com/tomiscattini/video/upload/v1645736284/Otras%20fotos/La_vaca_estudiosa_-_Canciones_de_Ma__getmp3.pro_hwopqd.mp3',
-                        type: 'audio/mpeg'
-                    }
-                ],
                 theme: 'Una vaca vieja en la quebrada de Humahuaca',
-                genre: 'Vidala',
-                assignment_rules: 'Componer una canción infantil con aire norteño',
-                lyrics: 'Había una vez una vaca...',
-                image: 'https://res.cloudinary.com/tomiscattini/image/upload/v1645736521/Otras%20fotos/index_qu0x9c.jpg',
-                chords: ''
+                genre: 'Vidala'
             },
             {
                 version_id: 3,
                 version_status: version_status_options.draft,
-                titles: {
-                    open_to_vote: false,
-                    chosen_title: 997,
-                    list: [
-                        {
-                            id: 17,
-                            title: 'Mi primera canción',
-                            votes: 0
-                        },
-                        {
-                            id: 95,
-                            title: 'Otro título',
-                            votes: 0
-                        },
-                        {
-                            id: 997,
-                            title: 'La vaca estudiosa',
-                            votes: 0
-                        }
-                    ]
-                },
-                audio_files: [
-                    {
-                        src: 'https://res.cloudinary.com/tomiscattini/video/upload/v1645736284/Otras%20fotos/La_vaca_estudiosa_-_Canciones_de_Ma__getmp3.pro_hwopqd.mp3',
-                        type: 'audio/mpeg'
-                    }
-                ],
-                theme: 'Una vaca vieja en la quebrada de Humahuaca',
-                genre: 'Vidala',
-                assignment_rules: 'Componer una canción infantil con aire norteño',
-                lyrics: 'Había una vez una vaca en la quebrada de Humahuaca',
-                image: 'https://res.cloudinary.com/tomiscattini/image/upload/v1645736521/Otras%20fotos/index_qu0x9c.jpg',
-                chords: ''
+                lyrics: 'Había una vez una vaca en la quebrada de Humahuaca'
             }
         ],
         suggestions: [],
@@ -138,4 +86,43 @@ const publicProjects = [
     }
 ];
 
-export default publicProjects;
+class PublicProjects {
+    rawData = publicProjects;
+
+    getAllComposingProjects() {
+        return this.rawData.map((project) => {
+            const filteredVersions = project.versions?.filter(
+                (version) => version.version_status === version_status_options.approved
+            );
+
+            const sumUpArrays = (objValue, srcValue) => {
+                if (_.isArray(objValue)) {
+                    return objValue.concat(srcValue);
+                }
+            };
+
+            const mergedVersion = _.mergeWith({}, ...filteredVersions, sumUpArrays);
+
+            const title = mergedVersion?.titles?.list?.filter(
+                (title) => title?.id === mergedVersion?.titles?.chosen_title
+            )[0]?.title;
+
+            return {
+                projectId: project?.id,
+                author: {
+                    name: project?.author?.full_name,
+                    logo: project?.author?.photo_url,
+                    uid: project?.author?.uid
+                },
+                logo: mergedVersion?.image,
+                title,
+                lyrics: mergedVersion?.lyrics,
+                audio: mergedVersion?.audio_files[0]
+            };
+        });
+    }
+}
+
+const instance = new PublicProjects();
+
+export default instance;

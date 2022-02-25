@@ -7,3 +7,4 @@
 -   Feature: Add Projects pages and projects slice.
 -   Feature: Update projects slices.
 -   Feature: Add fake db and projects list item.
+-   Feature: Create a fake api response and make all heavy logic on that side.

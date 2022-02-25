@@ -12,8 +12,9 @@ export default class FirebaseProjectsService extends FirebaseUploadService {
 
     getPublicProjects = (params) => {
         return new Promise((resolve, reject) => {
+            const fakeResponse = publicProjects.getAllComposingProjects();
             setTimeout(() => {
-                resolve(publicProjects);
+                resolve(fakeResponse);
             }, 1000);
         });
     };
