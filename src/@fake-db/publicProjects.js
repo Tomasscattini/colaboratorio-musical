@@ -27,7 +27,9 @@ const publicProjects = [
         privacy_status: privacy_status_options.public,
         work_status: work_status_options.composing,
         versions: [
+            // head_id: 'f0esxh4v9s9',
             {
+                parent_id: null,
                 version_id: 1,
                 version_status: version_status_options.approved,
                 titles: {
@@ -60,6 +62,7 @@ const publicProjects = [
                 chords: ''
             },
             {
+                parent_id: 'd08esaxhv9s',
                 version_id: 2,
                 version_status: version_status_options.approved,
                 titles: {
@@ -76,6 +79,7 @@ const publicProjects = [
                 genre: 'Vidala'
             },
             {
+                parent_id: 'd85eva3hv9s',
                 version_id: 3,
                 version_status: version_status_options.draft,
                 lyrics: 'Había una vez una vaca en la quebrada de Humahuaca'
@@ -106,6 +110,28 @@ class PublicProjects {
             const title = mergedVersion?.titles?.list?.filter(
                 (title) => title?.id === mergedVersion?.titles?.chosen_title
             )[0]?.title;
+
+            // const getLastVersion = (object) => {
+            //     const keysToReturn = ['image', 'titles', 'lyrics', 'audio_files'];
+            //     const lastVersion = {};
+            //     keysToReturn.forEach((key) => {
+            //         lastVersion[key] = getLastPropertyValueRecursive(object, object[object['head_id']], key);
+            //     });
+            //     return lastVersion;
+            // };
+
+            // const getLastPropertyValueRecursive = (parentObject, object, key) => {
+            //     if (object['version_status'] === version_status_options.draft && !object['parent_id']) return '';
+            //     if (object['version_status'] === version_status_options.draft && object['parent_id'])
+            //         return getLastPropertyValueRecursive(parentObject, parentObject[object['parent_id']], key);
+            //     if (object[key]) return object[key];
+            //     if (!object['parent_id']) return '';
+            //     return getLastPropertyValueRecursive(parentObject, parentObject[object['parent_id']], key);
+            // };
+
+            // const lastVersion = getLastVersion(project.versions);
+
+            // console.log(lastVersion);
 
             return {
                 projectId: project?.id,
