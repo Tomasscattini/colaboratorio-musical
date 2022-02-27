@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { submitLoginWithFireBase, forgotPassword } from 'auth/store/loginSlice';
-import { registerWithFirebase } from 'auth/store/registerSlice';
+import { submitLogin, forgotPassword } from 'auth/store/loginSlice';
+import { submitRegister } from 'auth/store/registerSlice';
 
 import { Container, Grid, makeStyles, Typography } from '@material-ui/core';
 
@@ -57,14 +57,15 @@ const LandingPage = ({ history, form = 'signup' }) => {
     const content = useSelector(({ ui }) => ui.textContent.authPage);
 
     useEffect(() => {
+        console.log({ authenticated });
         if (authenticated) history.push(defaultRedirects[data?.role] || defaultRedirects.default);
     }, [history, authenticated, data?.role]);
 
     const onLoginSubmit = (values) => {
-        dispatch(submitLoginWithFireBase(values));
+        dispatch(submitLogin(values));
     };
     const onRegisterSubmit = (values) => {
-        dispatch(registerWithFirebase(values));
+        dispatch(submitRegister(values));
     };
     const onResetPasswordSubmit = (values) => {
         dispatch(forgotPassword(values));

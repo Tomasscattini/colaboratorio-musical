@@ -2,7 +2,28 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { showMessage } from 'store/ui/messageSlice';
 import firebaseService from 'services/firebaseService';
-import { createUserSettingsFirebase } from './userSlice';
+import mainApiService from 'services/mainApiService';
+import { setUserDataMainApi, createUserSettingsFirebase } from './userSlice';
+
+export const submitRegister =
+    ({ displayName, password, email }) =>
+    async (dispatch) => {
+        return mainApiService
+            .signup({
+                fullName: displayName,
+                password,
+                email
+            })
+            .then((user) => {
+                dispatch(setUserDataMainApi(user));
+                return dispatch(registerSuccess());
+            })
+            .catch((error) => {
+                return dispatch(
+                    registerError([{ message: error?.response?.data?.message, type: error?.response?.data?.type }])
+                );
+            });
+    };
 
 export const registerWithFirebase = (model) => async (dispatch) => {
     if (!firebaseService.auth) {

@@ -1,8 +1,80 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { showMessage } from 'store/ui/messageSlice';
-import { setUserData } from './userSlice';
+import { setUserData, setUserDataMainApi } from './userSlice';
 import firebaseService from 'services/firebaseService';
+import mainApiService from 'services/mainApiService';
+
+export const submitLogin =
+    ({ email, password }) =>
+    async (dispatch) => {
+        return mainApiService
+            .login({ email, password })
+            .then((user) => {
+                dispatch(setUserDataMainApi(user));
+
+                return dispatch(loginSuccess());
+            })
+            .catch((error) => {
+                if (error?.response?.data?.type === 'all') {
+                    return dispatch(
+                        loginError([
+                            { message: error?.response?.data?.message, type: 'email' },
+                            { message: error?.response?.data?.message, type: 'password' }
+                        ])
+                    );
+                }
+                return dispatch(
+                    loginError([{ message: error?.response?.data?.message, type: error?.response?.data?.type }])
+                );
+            });
+    };
+
+export const forgotPassword =
+    ({ email }) =>
+    async (dispatch) => {
+        return mainApiService
+            .forgotPassword({ email })
+            .then((user) => {
+                return { status: 'done' };
+            })
+            .catch((error) => {
+                if (error.message?.includes('404'))
+                    dispatch(showMessage({ message: 'User by this email does not exist', variant: 'error' }));
+                else dispatch(showMessage({ message: error.message, variant: 'error' }));
+                return { status: 'error' };
+            });
+    };
+
+export const resetPassword =
+    ({ otp, password, userId }) =>
+    async (dispatch) => {
+        return mainApiService
+            .resetPassword({ otp, password, userId })
+            .then((user) => {
+                dispatch(showMessage({ message: 'Your password has been succesfully updated', variant: 'success' }));
+                return { status: 'done' };
+            })
+            .catch((error) => {
+                dispatch(showMessage({ message: error.message, variant: 'error' }));
+                return { status: 'error' };
+            });
+    };
+
+export const changePassword =
+    ({ oldPassword, newPassword }) =>
+    async (dispatch) => {
+        return mainApiService
+            .changePassword({ oldPassword, newPassword })
+            .then((user) => {
+                dispatch(showMessage({ message: 'Your password has been succesfully updated', variant: 'success' }));
+                return { status: 'done' };
+            })
+            .catch((error) => {
+                dispatch(showMessage({ message: error.message, variant: 'error' }));
+                return { status: 'error' };
+            });
+    };
 
 export const submitLoginWithFireBase =
     ({ email, password }) =>
@@ -53,56 +125,10 @@ export const submitLoginWithFireBase =
             });
     };
 
-export const changePassword =
-    ({ newPassword }) =>
-    async (dispatch) => {
-        return firebaseService
-            .changePassword({ newPassword })
-            .then((user) => {
-                dispatch(showMessage({ message: 'Your password has been succesfully updated', variant: 'success' }));
-                return { status: 'done' };
-            })
-            .catch((error) => {
-                dispatch(showMessage({ message: error.message, variant: 'error' }));
-                return { status: 'error' };
-            });
-    };
-
-export const forgotPassword =
-    ({ email }) =>
-    async (dispatch) => {
-        return firebaseService
-            .forgotPassword({ email })
-            .then((user) => {
-                return { status: 'done' };
-            })
-            .catch((error) => {
-                if (error.message?.includes('404'))
-                    dispatch(showMessage({ message: 'User by this email does not exist', variant: 'error' }));
-                else dispatch(showMessage({ message: error.message, variant: 'error' }));
-                return { status: 'error' };
-            });
-    };
-
-// export const resetPassword =
-//     ({ otp, password, userId }) =>
-//     async (dispatch) => {
-//         return firebaseService
-//             .resetPassword({ otp, password, userId })
-//             .then((user) => {
-//                 dispatch(showMessage({ message: 'Your password has been succesfully updated', variant: 'success' }));
-//                 return { status: 'done' };
-//             })
-//             .catch((error) => {
-//                 dispatch(showMessage({ message: error.message, variant: 'error' }));
-//                 return { status: 'error' };
-//             });
-//     };
-
-export const deleteAccount = (values) => async (dispatch) => {
-    return firebaseService
-        .deleteAccount(values)
-        .then(() => {
+export const deleteAccount = () => async (dispatch) => {
+    return mainApiService
+        .deleteAccount()
+        .then((user) => {
             dispatch(showMessage({ message: 'Your account has been succesfully deleted', variant: 'success' }));
             return { status: 'done' };
         })

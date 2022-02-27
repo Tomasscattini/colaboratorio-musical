@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import SplashScreen from 'components/common/SplashScreen';
 import firebaseService from 'services/firebaseService';
+import mainApiService from 'services/mainApiService';
 import { hideMessage, showMessage } from 'store/ui/messageSlice';
 
-import { logoutUser, setUserDataFirebase, createUserSettingsFirebase } from './store/userSlice';
+import { logoutUser, setUserDataMainApi, setUserDataFirebase, createUserSettingsFirebase } from './store/userSlice';
 
 class Auth extends Component {
     state = {
@@ -13,10 +14,40 @@ class Auth extends Component {
     };
 
     componentDidMount() {
-        return Promise.all([this.firebaseCheck()]).then(() => {
+        return Promise.all([this.mainApiCheck()]).then(() => {
             this.setState({ waitAuthCheck: false });
         });
     }
+
+    mainApiCheck = () =>
+        new Promise((resolve) => {
+            const { appInformation } = this.props;
+
+            mainApiService.getUserData().then(
+                (user) => {
+                    if (!user) return resolve();
+
+                    this.props.setUserDataMainApi(user);
+
+                    resolve();
+
+                    this.props.showMessage({
+                        message: `Logged in to ${appInformation?.appTitle}`,
+                        variant: 'success'
+                    });
+                },
+                (error) => {
+                    this.props.showMessage({
+                        message: 'There was a problem with the connection',
+                        variant: 'error'
+                    });
+                    this.props.logout();
+                    resolve();
+                }
+            );
+
+            return Promise.resolve();
+        });
 
     firebaseCheck = () =>
         new Promise((resolve) => {
@@ -74,6 +105,7 @@ function mapDispatchToProps(dispatch) {
         {
             logout: logoutUser,
             setUserDataFirebase,
+            setUserDataMainApi,
             showMessage,
             createUserSettingsFirebase,
             hideMessage

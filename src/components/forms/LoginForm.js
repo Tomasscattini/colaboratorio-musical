@@ -54,10 +54,11 @@ function LoginForm({ onSubmit = () => {} }) {
 
     useEffect(() => {
         login?.errors?.forEach((error) => {
-            setError(error.type, {
-                type: 'manual',
-                message: error.message
-            });
+            if (error.type && error.message)
+                setError(error.type, {
+                    type: 'manual',
+                    message: error.message
+                });
         });
     }, [login.errors, setError]);
 

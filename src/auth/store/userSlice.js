@@ -3,14 +3,40 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
 import _ from 'lodash';
 import { showMessage } from 'store/ui/messageSlice';
+import mainApiService from 'services/mainApiService';
 import firebaseService from 'services/firebaseService';
 import authRoles from 'auth/authRoles';
 
 const history = createBrowserHistory();
 
+export const setUserDataMainApi = (user) => async (dispatch) => {
+    if (user) {
+        const userData = {
+            from: 'mainApi',
+            personalInformation: {
+                email: user.email || '',
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
+                instagramProfile: user.instagramProfile || '',
+                otherLink: user.otherLink || '',
+                personalWebsite: user.personalWebsite || '',
+                phoneNumber: user.phoneNumber || '',
+                professionalRole: user.professionalRole || '',
+                profileImage: user.profileImage || '',
+                spotifyProfile: user.spotifyProfile || '',
+                youtubeChannel: user.youtubeChannel || ''
+            },
+            role: user.role || authRoles.onlyGuest,
+            uid: user.id
+        };
+        return dispatch(setUserData(userData));
+    }
+};
+
 export const setUserDataFirebase = (user, authUser) => async (dispatch) => {
     if (user) {
         const userData = {
+            from: 'firebase',
             personalInformation: user.personalInformation || {},
             role: user.role || authRoles.onlyGuest,
             uid: user.uid
@@ -47,6 +73,7 @@ export const createUserSettingsFirebase = (authUser) => async (dispatch, getStat
 
 export const setUserData = (user) => async (dispatch, getState) => {
     const userData = {
+        from: user.from || '',
         personalInformation: user.personalInformation || {},
         role: user.role || authRoles.onlyGuest,
         uid: user.uid
@@ -59,9 +86,10 @@ export const updateUserInformation = (information) => async (dispatch, getState)
     const user = _.merge(
         {},
         {
+            from: oldUser.data?.from || '',
             personalInformation: oldUser.data?.personalInformation || {},
             role: oldUser.data?.role || '',
-            uid: oldUser.data?.uid || ''
+            id: oldUser.data?.uid || ''
         },
         {
             personalInformation: information
@@ -70,7 +98,7 @@ export const updateUserInformation = (information) => async (dispatch, getState)
 
     dispatch(updateUserData(user));
 
-    return dispatch(setUserDataFirebase(user));
+    return user.from === 'firebase' ? dispatch(setUserDataFirebase()) : dispatch(setUserDataMainApi(user));
 };
 
 export const logoutUser = () => async (dispatch, getState) => {
@@ -78,7 +106,7 @@ export const logoutUser = () => async (dispatch, getState) => {
         pathname: '/'
     });
 
-    await firebaseService.signOut();
+    await mainApiService.signOut();
 
     return dispatch(userLoggedOut());
 };
@@ -96,11 +124,22 @@ export const updateUserData = (user) => async (dispatch, getState) => {
                 });
             break;
         }
-        default: {
-            firebaseService
+        case 'mainApi': {
+            mainApiService
                 .updateUserData(user)
                 .then(() => {
-                    dispatch(setUserDataFirebase(user));
+                    dispatch(setUserDataMainApi(user));
+                })
+                .catch((error) => {
+                    dispatch(showMessage({ message: error.message }));
+                });
+            break;
+        }
+        default: {
+            mainApiService
+                .updateUserData(user)
+                .then(() => {
+                    dispatch(setUserDataMainApi(user));
                 })
                 .catch((error) => {
                     dispatch(showMessage({ message: error.message }));
